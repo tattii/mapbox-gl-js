@@ -1,3 +1,4 @@
+// @flow
 export default function throttle(fn: () => void, time: number): () => number {
     let pending = false;
     let timerId = 0;
@@ -18,4 +19,4 @@ export default function throttle(fn: () => void, time: number): () => number {
         }
         return timerId;
     };
-};
+}
