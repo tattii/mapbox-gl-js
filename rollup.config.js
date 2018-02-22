@@ -1,4 +1,4 @@
-import flow from 'rollup-plugin-flow';
+import flowRemoveTypes from 'flow-remove-types';
 import buble from 'rollup-plugin-buble';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -15,7 +15,7 @@ const outputFile = production ? 'dist/mapbox-gl.js' : 'dist/mapbox-gl-dev.js';
 
 const plugins = [
     sourcemaps(),
-    flow({pretty: true}), // setting {pretty: true} works around https://github.com/leebyron/rollup-plugin-flow/issues/5
+    flow(), // setting {pretty: true} works around https://github.com/leebyron/rollup-plugin-flow/issues/5
     minifyStyleSpec(),
     json(),
     buble({transforms: {dangerousForOf: true}, objectAssign: "Object.assign"}),
@@ -72,5 +72,17 @@ if (!shared) {
 }
 `
 }];
+
+// Using this instead of rollup-plugin-flow due to
+// https://github.com/leebyron/rollup-plugin-flow/issues/5
+function flow() {
+  return {
+    name: 'flow-remove-types',
+    transform: (code, id) => ({
+        code: flowRemoveTypes(code).toString(),
+        map: null 
+    })
+  };
+}
 
 export default config
