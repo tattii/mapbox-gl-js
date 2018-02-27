@@ -12,13 +12,17 @@
 
 const fs = require('fs');
 
-require = require('@std/esm')(module, {"cjs":true, "esm":"js"});
+require = require('@std/esm')(module, {
+    cjs: true,
+    esm: 'js',
+    sourceMap: true
+});
 
 const ejs = require('ejs');
-const util = require('../src_untyped/util/util');
-const {createLayout, viewTypes} = require('../src_untyped/util/struct_array');
+const util = require('../src/util/util');
+const {createLayout, viewTypes} = require('../src/util/struct_array');
 
-import type {ViewType, StructArrayLayout} from '../src_untyped/util/struct_array';
+import type {ViewType, StructArrayLayout} from '../src/util/struct_array';
 
 const structArrayLayoutJs = ejs.compile(fs.readFileSync('src/util/struct_array_layout.js.ejs', 'utf8'), {strict: true});
 const structArrayJs = ejs.compile(fs.readFileSync('src/util/struct_array.js.ejs', 'utf8'), {strict: true});
@@ -119,16 +123,16 @@ function camelize (str) {
 
 global.camelize = camelize;
 
-const posAttributes = require('../src_untyped/data/pos_attributes').default;
-const rasterBoundsAttributes = require('../src_untyped/data/raster_bounds_attributes').default;
+const posAttributes = require('../src/data/pos_attributes').default;
+const rasterBoundsAttributes = require('../src/data/raster_bounds_attributes').default;
 
 createStructArrayType('pos', posAttributes);
 createStructArrayType('raster_bounds', rasterBoundsAttributes);
 
-const circleAttributes = require('../src_untyped/data/bucket/circle_attributes').default;
-const fillAttributes = require('../src_untyped/data/bucket/fill_attributes').default;
-const fillExtrusionAttributes = require('../src_untyped/data/bucket/fill_extrusion_attributes').default ;
-const lineAttributes = require('../src_untyped/data/bucket/line_attributes').default;
+const circleAttributes = require('../src/data/bucket/circle_attributes').default;
+const fillAttributes = require('../src/data/bucket/fill_attributes').default;
+const fillExtrusionAttributes = require('../src/data/bucket/fill_extrusion_attributes').default ;
+const lineAttributes = require('../src/data/bucket/line_attributes').default;
 
 // layout vertex arrays
 const layoutAttributes = {
@@ -143,17 +147,29 @@ for (const name in layoutAttributes) {
 }
 
 // symbol layer specific arrays
-const symbolAttributes = require('../src_untyped/data/bucket/symbol_attributes').default;
-createStructArrayType(`symbol_layout`, symbolAttributes.symbolLayoutAttributes);
-createStructArrayType(`symbol_dynamic_layout`, symbolAttributes.dynamicLayoutAttributes);
-createStructArrayType(`symbol_opacity`, symbolAttributes.placementOpacityAttributes);
-createStructArrayType('collision_box', symbolAttributes.collisionBox, true);
-createStructArrayType(`collision_box_layout`, symbolAttributes.collisionBoxLayout);
-createStructArrayType(`collision_circle_layout`, symbolAttributes.collisionCircleLayout);
-createStructArrayType(`collision_vertex`, symbolAttributes.collisionVertexAttributes);
-createStructArrayType('placed_symbol', symbolAttributes.placement, true);
-createStructArrayType('glyph_offset', symbolAttributes.glyphOffset, true);
-createStructArrayType('symbol_line_vertex', symbolAttributes.lineVertex, true);
+const {
+    symbolLayoutAttributes,
+    dynamicLayoutAttributes,
+    placementOpacityAttributes,
+    collisionBox,
+    collisionBoxLayout,
+    collisionCircleLayout,
+    collisionVertexAttributes,
+    placement,
+    glyphOffset,
+    lineVertex
+} = require('../src/data/bucket/symbol_attributes');
+
+createStructArrayType(`symbol_layout`, symbolLayoutAttributes);
+createStructArrayType(`symbol_dynamic_layout`, dynamicLayoutAttributes);
+createStructArrayType(`symbol_opacity`, placementOpacityAttributes);
+createStructArrayType('collision_box', collisionBox, true);
+createStructArrayType(`collision_box_layout`, collisionBoxLayout);
+createStructArrayType(`collision_circle_layout`, collisionCircleLayout);
+createStructArrayType(`collision_vertex`, collisionVertexAttributes);
+createStructArrayType('placed_symbol', placement, true);
+createStructArrayType('glyph_offset', glyphOffset, true);
+createStructArrayType('symbol_line_vertex', lineVertex, true);
 
 // feature index array
 createStructArrayType('feature_index', createLayout([
