@@ -1390,7 +1390,7 @@ class Map extends Camera {
     _hasCSS(): boolean {
         for (const sheet of (window.document.styleSheets: any)) {
             for (const rule of sheet.cssRules) {
-                if (rule.selectorText === '.mapboxgl-map') return true;
+                if (rule.selectorText.toLowerCase() === '.mapboxgl-map') return true;
             }
         }
         return false;
