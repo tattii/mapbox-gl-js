@@ -19,6 +19,7 @@ function createMap() {
 
 test('FullscreenControl appears when fullscreen is enabled', (t) => {
     window.document.fullscreenEnabled = true;
+    t.stub(console, 'warn');
 
     const map = createMap();
     const fullscreen = new FullscreenControl();

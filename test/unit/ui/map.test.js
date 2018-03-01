@@ -16,6 +16,7 @@ const fixedCoord = fixed.Coord;
 
 function createMap(options, callback) {
     const container = window.document.createElement('div');
+
     Object.defineProperty(container, 'offsetWidth', {value: 200, configurable: true});
     Object.defineProperty(container, 'offsetHeight', {value: 200, configurable: true});
 
@@ -49,8 +50,15 @@ function createStyleSource() {
 }
 
 test('Map', (t) => {
+    t.stub(Map, '_hasCSS').returns(true);
+
     t.beforeEach((callback) => {
         window.useFakeXMLHttpRequest();
+        const styleSheet = new window.CSSStyleSheet();
+        styleSheet.insertRule('.mapboxgl-map { overflow: hidden; }', 0);
+        window.document.styleSheets[0] = styleSheet;
+        window.document.styleSheets.length = 1;
+
         callback();
     });
 
@@ -798,7 +806,7 @@ test('Map', (t) => {
 
     t.test('#remove', (t) => {
         const map = createMap();
-        t.equal(map.getContainer().childNodes.length, 3);
+        t.equal(map.getContainer().childNodes.length, 2);
         map.remove();
         t.equal(map.getContainer().childNodes.length, 0);
         t.end();
@@ -1298,6 +1306,21 @@ test('Map', (t) => {
                 }
             });
         });
+    });
+
+    t.test('should warn when CSS is missing', (t) => {
+        const stub = t.stub(console, 'warn');
+        // we stub .mapboxgl-map in the setup for each test, so this should not warn:
+        createMap();
+
+        t.notok(stub.calledOnce);
+
+        window.restore();
+        createMap();
+
+        t.ok(stub.calledOnce);
+
+        t.end();
     });
 
     t.end();

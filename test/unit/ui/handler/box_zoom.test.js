@@ -11,6 +11,7 @@ function createMap() {
 }
 
 test('BoxZoomHandler fires boxzoomstart and boxzoomend events at appropriate times', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     const boxzoomstart = t.spy();
@@ -39,6 +40,7 @@ test('BoxZoomHandler fires boxzoomstart and boxzoomend events at appropriate tim
 });
 
 test('BoxZoomHandler avoids conflicts with DragPanHandler when disabled and reenabled (#2237)', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.boxZoom.disable();
@@ -82,6 +84,7 @@ test('BoxZoomHandler avoids conflicts with DragPanHandler when disabled and reen
 });
 
 test('BoxZoomHandler does not begin a box zoom if preventDefault is called on the mousedown event', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('mousedown', e => e.preventDefault());

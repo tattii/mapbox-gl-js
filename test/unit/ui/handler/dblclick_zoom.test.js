@@ -11,6 +11,7 @@ function createMap() {
 }
 
 test('DoubleClickZoomHandler does not zoom if preventDefault is called on the dblclick event', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('dblclick', e => e.preventDefault());

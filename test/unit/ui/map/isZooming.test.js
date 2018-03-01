@@ -12,6 +12,7 @@ function createMap() {
 }
 
 test('Map#isZooming returns false by default', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     t.equal(map.isZooming(), false);
     map.remove();
@@ -19,6 +20,7 @@ test('Map#isZooming returns false by default', (t) => {
 });
 
 test('Map#isZooming returns true during a camera zoom animation', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('zoomstart', () => {
@@ -35,6 +37,7 @@ test('Map#isZooming returns true during a camera zoom animation', (t) => {
 });
 
 test('Map#isZooming returns true when scroll zooming', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('zoomstart', () => {
@@ -58,6 +61,7 @@ test('Map#isZooming returns true when scroll zooming', (t) => {
 });
 
 test('Map#isZooming returns true when double-click zooming', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('zoomstart', () => {

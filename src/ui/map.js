@@ -219,7 +219,6 @@ class Map extends Camera {
     painter: Painter;
 
     _container: HTMLElement;
-    _missingCSSContainer: HTMLElement;
     _canvasContainer: HTMLElement;
     _controlContainer: HTMLElement;
     _controlPositions: {[string]: HTMLElement};
@@ -1388,12 +1387,20 @@ class Map extends Camera {
         return [width, height];
     }
 
+    _hasCSS(): boolean {
+        for (const sheet of (window.document.styleSheets: any)) {
+            for (const rule of sheet.cssRules) {
+                if (rule.selectorText === '.mapboxgl-map') return true;
+            }
+        }
+        return false;
+    }
+
     _setupContainer() {
         const container = this._container;
         container.classList.add('mapboxgl-map');
 
-        const missingCSSContainer = this._missingCSSContainer = DOM.create('div', 'mapboxgl-missing-css', container);
-        missingCSSContainer.innerHTML = 'Missing Mapbox GL JS CSS';
+        if (!this._hasCSS()) util.warnOnce('Missing Mapbox GL JS CSS: map may not display correctly.');
 
         const canvasContainer = this._canvasContainer = DOM.create('div', 'mapboxgl-canvas-container', container);
         if (this._interactive) {
@@ -1601,7 +1608,6 @@ class Map extends Camera {
         if (extension) extension.loseContext();
         removeNode(this._canvasContainer);
         removeNode(this._controlContainer);
-        removeNode(this._missingCSSContainer);
         this._container.classList.remove('mapboxgl-map');
         this.fire(new Event('remove'));
     }

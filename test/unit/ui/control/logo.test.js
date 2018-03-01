@@ -39,6 +39,7 @@ function createSource(options, logoRequired) {
     return source;
 }
 test('LogoControl appears in bottom-left by default', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     map.on('load', () => {
         t.equal(map.getContainer().querySelectorAll(
@@ -49,6 +50,7 @@ test('LogoControl appears in bottom-left by default', (t) => {
 });
 
 test('LogoControl appears in the position specified by the position option', (t) => {
+    t.stub(console, 'warn');
     const map = createMap('top-left');
     map.on('load', () => {
         t.equal(map.getContainer().querySelectorAll(
@@ -59,6 +61,7 @@ test('LogoControl appears in the position specified by the position option', (t)
 });
 
 test('LogoControl is not displayed when the mapbox_logo property is false', (t) => {
+    t.stub(console, 'warn');
     const map = createMap('top-left', false);
     map.on('load', () => {
         t.equal(map.getContainer().querySelectorAll('.mapboxgl-ctrl-top-left > .mapboxgl-ctrl')[0].style.display, 'none');
@@ -66,6 +69,7 @@ test('LogoControl is not displayed when the mapbox_logo property is false', (t) 
     });
 });
 test('LogoControl is not added more than once', (t)=>{
+    t.stub(console, 'warn');
     const map = createMap();
     const source = createSource({
         minzoom: 1,

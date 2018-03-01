@@ -12,6 +12,7 @@ function createMap() {
 }
 
 test('Map#isMoving returns false by default', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     t.equal(map.isMoving(), false);
     map.remove();
@@ -19,6 +20,7 @@ test('Map#isMoving returns false by default', (t) => {
 });
 
 test('Map#isMoving returns true during a camera zoom animation', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('zoomstart', () => {
@@ -35,6 +37,7 @@ test('Map#isMoving returns true during a camera zoom animation', (t) => {
 });
 
 test('Map#isMoving returns true when drag panning', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('dragstart', () => {
@@ -58,6 +61,7 @@ test('Map#isMoving returns true when drag panning', (t) => {
 });
 
 test('Map#isMoving returns true when drag rotating', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('rotatestart', () => {
@@ -81,6 +85,7 @@ test('Map#isMoving returns true when drag rotating', (t) => {
 });
 
 test('Map#isMoving returns true when scroll zooming', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('zoomstart', () => {
@@ -105,6 +110,7 @@ test('Map#isMoving returns true when scroll zooming', (t) => {
 });
 
 test('Map#isMoving returns true when drag panning and scroll zooming interleave', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('dragstart', () => {

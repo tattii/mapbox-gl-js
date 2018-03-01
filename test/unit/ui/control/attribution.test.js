@@ -25,6 +25,7 @@ function createMap() {
 }
 
 test('AttributionControl appears in bottom-right by default', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     map.addControl(new AttributionControl());
 
@@ -33,6 +34,7 @@ test('AttributionControl appears in bottom-right by default', (t) => {
 });
 
 test('AttributionControl appears in the position specified by the position option', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     map.addControl(new AttributionControl(), 'top-left');
 
@@ -41,6 +43,7 @@ test('AttributionControl appears in the position specified by the position optio
 });
 
 test('AttributionControl appears in compact mode if compact option is used', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     Object.defineProperty(map.getCanvasContainer(), 'offsetWidth', {value: 700, configurable: true});
 
@@ -65,6 +68,7 @@ test('AttributionControl appears in compact mode if compact option is used', (t)
 });
 
 test('AttributionControl appears in compact mode if container is less then 640 pixel wide', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     Object.defineProperty(map.getCanvasContainer(), 'offsetWidth', {value: 700, configurable: true});
     map.addControl(new AttributionControl());
@@ -81,6 +85,7 @@ test('AttributionControl appears in compact mode if container is less then 640 p
 });
 
 test('AttributionControl dedupes attributions that are substrings of others', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     const attribution = new AttributionControl();
     map.addControl(attribution);
@@ -106,6 +111,7 @@ test('AttributionControl dedupes attributions that are substrings of others', (t
 });
 
 test('AttributionControl has the correct edit map link', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     const attribution = new AttributionControl();
     map.addControl(attribution);
@@ -123,6 +129,7 @@ test('AttributionControl has the correct edit map link', (t) => {
 });
 
 test('AttributionControl is hidden if empty', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     const attribution = new AttributionControl();
     map.addControl(attribution);

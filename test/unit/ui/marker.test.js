@@ -45,6 +45,7 @@ test('Marker', (t) => {
     });
 
     t.test('marker is added to map', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const marker = new Marker(window.document.createElement('div')).setLngLat([-77.01866, 38.888]);
         t.ok(marker.addTo(map) instanceof Marker, 'marker.addTo(map) returns Marker instance');
@@ -53,6 +54,7 @@ test('Marker', (t) => {
     });
 
     t.test('marker\'s lngLat can be changed', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const marker = new Marker(window.document.createElement('div')).setLngLat([-77.01866, 38.888]).addTo(map);
         t.ok(marker.setLngLat([-76, 39]) instanceof Marker, 'marker.setLngLat() returns Marker instance');
@@ -62,6 +64,7 @@ test('Marker', (t) => {
     });
 
     t.test('popups can be bound to marker instance', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const popup = new Popup();
         const marker = new Marker(window.document.createElement('div')).setLngLat([-77.01866, 38.888]).addTo(map);
@@ -71,6 +74,7 @@ test('Marker', (t) => {
     });
 
     t.test('popups can be unbound from a marker instance', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const marker = new Marker(window.document.createElement('div')).setLngLat([-77.01866, 38.888]).addTo(map);
         marker.setPopup(new Popup());
@@ -81,6 +85,7 @@ test('Marker', (t) => {
     });
 
     t.test('popups can be set before LngLat', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const popup = new Popup();
         new Marker(window.document.createElement('div'))
@@ -92,6 +97,7 @@ test('Marker', (t) => {
     });
 
     t.test('marker centered by default', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const element = window.document.createElement('div');
         const marker = new Marker(element).setLngLat([0, 0]).addTo(map);
@@ -101,6 +107,7 @@ test('Marker', (t) => {
     });
 
     t.test('togglePopup returns Marker instance', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const element = window.document.createElement('div');
         const marker = new Marker(element).setLngLat([0, 0]).addTo(map);
@@ -110,6 +117,7 @@ test('Marker', (t) => {
     });
 
     t.test('marker\'s offset can be changed', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const marker = new Marker(window.document.createElement('div')).setLngLat([-77.01866, 38.888]).addTo(map);
         const offset = marker.getOffset();

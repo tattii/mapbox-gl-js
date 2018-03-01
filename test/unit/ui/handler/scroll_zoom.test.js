@@ -25,6 +25,7 @@ test('ScrollZoomHandler', (t) => {
     browserNow.callsFake(() => now);
 
     t.test('Zooms for single mouse wheel tick', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         map._updateCamera();
 
@@ -44,6 +45,7 @@ test('ScrollZoomHandler', (t) => {
     });
 
     t.test('Zooms for single mouse wheel tick with non-magical deltaY', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         map._updateCamera();
 
@@ -58,6 +60,7 @@ test('ScrollZoomHandler', (t) => {
     });
 
     t.test('Zooms for multiple mouse wheel ticks', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
 
         map._updateCamera();
@@ -96,6 +99,7 @@ test('ScrollZoomHandler', (t) => {
     });
 
     t.test('Gracefully ignores wheel events with deltaY: 0', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         map._updateCamera();
 
@@ -116,6 +120,7 @@ test('ScrollZoomHandler', (t) => {
     });
 
     test('does not zoom if preventDefault is called on the wheel event', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
 
         map.on('wheel', e => e.preventDefault());

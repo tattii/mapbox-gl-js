@@ -10,10 +10,6 @@
     height: 100%;
 }
 
-.mapboxgl-missing-css {
-    display: none;
-}
-
 .mapboxgl-canvas-container.mapboxgl-interactive,
 .mapboxgl-ctrl-nav-compass {
     cursor: -webkit-grab;

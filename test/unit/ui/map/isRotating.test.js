@@ -11,6 +11,7 @@ function createMap() {
 }
 
 test('Map#isRotating returns false by default', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
     t.equal(map.isRotating(), false);
     map.remove();
@@ -18,6 +19,7 @@ test('Map#isRotating returns false by default', (t) => {
 });
 
 test('Map#isRotating returns true during a camera rotate animation', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('rotatestart', () => {
@@ -34,6 +36,7 @@ test('Map#isRotating returns true during a camera rotate animation', (t) => {
 });
 
 test('Map#isRotating returns true when drag rotating', (t) => {
+    t.stub(console, 'warn');
     const map = createMap();
 
     map.on('rotatestart', () => {

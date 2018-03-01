@@ -21,6 +21,7 @@ test('hash', (t) => {
 
 
     t.test('#addTo', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const hash = createHash();
 
@@ -33,6 +34,7 @@ test('hash', (t) => {
     });
 
     t.test('#remove', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const hash = createHash()
             .addTo(map);
@@ -46,6 +48,7 @@ test('hash', (t) => {
     });
 
     t.test('#_onHashChange', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const hash = createHash()
             .addTo(map);
@@ -76,6 +79,7 @@ test('hash', (t) => {
     });
 
     t.test('#_onHashChange empty', (t) => {
+        t.stub(console, 'warn');
         const map = createMap();
         const hash = createHash()
             .addTo(map);
@@ -108,6 +112,7 @@ test('hash', (t) => {
             return window.location.hash.split('/');
         }
 
+        t.stub(console, 'warn');
         const map = createMap();
         createHash()
             .addTo(map);
