@@ -11,7 +11,7 @@ const shuffler = require('shuffle-seed');
 
 module.exports = function (directory, implementation, options, run) {
     const q = queue(1);
-    const server = require('./server')();
+    const server = require('./server')(implementation);
 
     const tests = options.tests || [];
     const ignores = options.ignores || {};
