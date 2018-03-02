@@ -12,14 +12,12 @@ type ValidationError = {
 type Validator = (Object) => $ReadOnlyArray<ValidationError>;
 
 export const validateStyle = (validateStyleMin: (Object, ?Object) => $ReadOnlyArray<ValidationError>);
-export const {
-    source: validateSource,
-    light: validateLight,
-    layer: validateLayer,
-    filter: validateFilter,
-    paintProperty: validatePaintProperty,
-    layoutProperty: validateLayoutProperty
-} = (validateStyleMin: { [string]: Validator });
+
+export const validateSource = (validateStyleMin.source: Validator);
+export const validateLight = (validateStyleMin.light: Validator);
+export const validateFilter = (validateStyleMin.filter: Validator);
+export const validatePaintProperty = (validateStyleMin.paintProperty: Validator);
+export const validateLayoutProperty = (validateStyleMin.layoutProperty: Validator);
 
 export function emitValidationErrors(emitter: Evented, errors: ?$ReadOnlyArray<{message: string}>) {
     if (errors && errors.length) {
