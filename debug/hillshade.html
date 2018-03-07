@@ -67,8 +67,9 @@
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/cjaudgl840gn32rnrepcb9b9g', // the outdoors-v10 style but without Hillshade layers
-    center: [-119.5591, 37.715],
-    zoom: 9
+    center: [130.8537, 31.9288],
+    zoom: 10,
+	hash: true
 });
 
 map.on('load', function () {
@@ -105,9 +106,28 @@ map.on('load', function () {
     // where hillshading sits in the Mapbox Outdoors style
     }, 'waterway-river-canal-shadow');
 
+    map.addSource('gsi-dem', {
+        "type": "raster-dem",
+        "encoding": "gsi",
+        "tiles": [
+			"https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png"
+        ],
+        "tileSize": 256,
+		"maxzoom": 14
+    });
+    map.addLayer({
+        "id": "GSI dem",
+        "source": "gsi-dem",
+        "type": "hillshade",
+        "layout": {
+            "visibility": "none"
+        }
+    // insert below waterway-river-canal-shadow;
+    // where hillshading sits in the Mapbox Outdoors style
+    }, 'waterway-river-canal-shadow');
 });
 
-var toggleableLayerIds = ['Mapbox data', 'Terrarium data'];
+var toggleableLayerIds = ['Mapbox data', 'Terrarium data', 'GSI dem'];
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
     var id = toggleableLayerIds[i];
