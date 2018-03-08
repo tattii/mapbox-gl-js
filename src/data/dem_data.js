@@ -102,7 +102,10 @@ class DEMData {
     _unpackGsi(r: number, g: number, b: number) {
         // unpacking formula for GSI Japan DEM tile
         // http://maps.gsi.go.jp/development/demtile.html
-        return 0.01 * (r * 256 * 256 + g * 256 + b);
+        // int24 complement
+        // sea surface = NA (2 ^ 23)
+        let h = r * 256 * 256 + g * 256 + b;
+        return (h == Math.pow(2, 23)) ? 0 : 0.01 * ((h << 8) | 0) >> 8; // uint24 -> uint32 -> int32 -> int24
     }
 
     _unpackData(level: Level, pixels: Uint8Array | Uint8ClampedArray, encoding: string) {
