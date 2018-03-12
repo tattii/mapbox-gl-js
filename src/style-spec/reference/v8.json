@@ -280,7 +280,10 @@
         },
         "mapbox": {
           "doc": "Mapbox Terrain RGB tiles. See https://www.mapbox.com/help/access-elevation-data/#mapbox-terrain-rgb for more info."
-        }
+        },
+		"gsi": {
+		  "doc": "GSI formated PNG tiles. See https://maps.gsi.go.jp/development/demtile.html"
+		}
       },
       "default": "mapbox",
       "doc": "The encoding used by this source. Mapbox Terrain RGB is used by default"
