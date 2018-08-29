@@ -29,7 +29,7 @@ export type WorkerTileParameters = TileParameters & {
 export type WorkerDEMTileParameters = TileParameters & {
     coord: { z: number, x: number, y: number, w: number },
     rawImageData: RGBAImage,
-    encoding: "mapbox" | "terrarium"
+    encoding: "mapbox" | "terrarium" | "gsi"
 };
 
 export type WorkerTileResult = {
