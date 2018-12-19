@@ -525,6 +525,14 @@
             }
           }
         },
+        "relief": {
+          "doc": "",
+          "sdk-support": {
+            "basic functionality": {
+              "js": "---"
+            }
+          }
+        },
         "background": {
           "doc": "The background color or pattern of the map.",
           "sdk-support": {

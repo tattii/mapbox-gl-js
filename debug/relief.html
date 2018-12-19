@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapbox GL JS debug page</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel='stylesheet' href='/dist/mapbox-gl.css' />
+    <style>
+        body { margin: 0; padding: 0; }
+        html, body, #map { height: 100%; }
+    </style>
+</head>
+
+<body>
+
+<div id='map'></div>
+
+<script src='/dist/mapbox-gl-dev.js'></script>
+<script src='/debug/access_token_generated.js'></script>
+<script>
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/cjaudgl840gn32rnrepcb9b9g', // the outdoors-v10 style but without Hillshade layers
+    center: [130.8537, 31.9288],
+    zoom: 10,
+	hash: true
+});
+
+map.on('load', function () {
+
+    map.addSource('gsi-dem', {
+        "type": "raster-dem",
+        "encoding": "gsi",
+        "tiles": [
+			"https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png"
+        ],
+        "tileSize": 256,
+		"maxzoom": 14,
+		"attribution": '<a href="https://maps.gsi.go.jp/development/ichiran.html#dem" target="_blank">地理院標高タイル</a>'
+    });
+    map.addLayer({
+        "id": "relief",
+        "source": "gsi-dem",
+        "type": "relief",
+        "layout": {
+        }
+    }, 'waterway-river-canal-shadow');
+    map.addLayer({
+        "id": "GSI dem",
+        "source": "gsi-dem",
+        "type": "hillshade",
+        "layout": {
+        }
+    }, 'relief');
+});
+
+
+</script>
+</body>
+</html>
