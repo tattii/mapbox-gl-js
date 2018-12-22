@@ -30,7 +30,7 @@ const draw = {
     fill: require('./draw_fill'),
     'fill-extrusion': require('./draw_fill_extrusion'),
     hillshade: require('./draw_hillshade'),
-    relief: require('./draw_hillshade'),
+    relief: require('./draw_relief'),
     raster: require('./draw_raster'),
     background: require('./draw_background'),
     debug: require('./draw_debug')
