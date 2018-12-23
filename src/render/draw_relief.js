@@ -17,63 +17,58 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: Hillshade
     if (painter.renderPass !== 'translucent') return;
 
     const context = painter.context;
+    const gl = context.gl;
+    const program = painter.useProgram('relief');
 
-    context.setDepthMode(painter.depthModeForSublayer(0, DepthMode.ReadOnly));
     context.setStencilMode(StencilMode.disabled);
     context.setColorMode(painter.colorModeForRenderPass());
 
+    // Constant parameters.
+    gl.uniform1i(program.uniforms.u_image, 0);
+    gl.uniform1f(program.uniforms.u_opacity, 0.7);
+    const shadowColor = layer.paint.get("hillshade-shadow-color");
+    gl.uniform4f(program.uniforms.u_shadow, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
+
+
     for (const tileID of tileIDs) {
         const tile = sourceCache.getTile(tileID);
-        renderRelief(painter, tile, layer);
-    }
-}
 
+        if (tile.dem && tile.dem.level) {
+            // dem texture
+            const tileSize = tile.dem.level.dim;
+            const pixelData = tile.dem.getPixels();
+            context.activeTexture.set(gl.TEXTURE0);
 
-function renderRelief(painter, tile, layer) {
-    const context = painter.context;
-    const gl = context.gl;
+            context.pixelStoreUnpackPremultiplyAlpha.set(false);
+            tile.demTexture = tile.demTexture || painter.getTileTexture(tile.tileSize);
+            if (tile.demTexture) {
+                const demTexture = tile.demTexture;
+                demTexture.update(pixelData, false);
+                demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
+            } else {
+                tile.demTexture = new Texture(context, pixelData, gl.RGBA, false);
+                tile.demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
+            }
 
-    if (tile.dem && tile.dem.level) {
-        // dem texture
-        const tileSize = tile.dem.level.dim;
-        const pixelData = tile.dem.getPixels();
-        context.activeTexture.set(gl.TEXTURE0);
+            // relief paint
+            const posMatrix = painter.transform.calculatePosMatrix(tile.tileID.toUnwrapped(), true);
+            gl.uniformMatrix4fv(program.uniforms.u_matrix, false, posMatrix);
 
-        context.pixelStoreUnpackPremultiplyAlpha.set(false);
-        tile.demTexture = tile.demTexture || painter.getTileTexture(tile.tileSize);
-        if (tile.demTexture) {
-            const demTexture = tile.demTexture;
-            demTexture.update(pixelData, false);
-            demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
-        } else {
-            tile.demTexture = new Texture(context, pixelData, gl.RGBA, false);
-            tile.demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
-        }
-
-        // relief paint
-        const program = painter.useProgram('relief');
-        const posMatrix = painter.transform.calculatePosMatrix(tile.tileID.toUnwrapped(), true);
-
-        gl.uniformMatrix4fv(program.uniforms.u_matrix, false, posMatrix);
-        gl.uniform1i(program.uniforms.u_image, 0);
-
-        const shadowColor = layer.paint.get("hillshade-shadow-color");
-        gl.uniform4f(program.uniforms.u_shadow, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
-
-        if (tile.maskedBoundsBuffer && tile.maskedIndexBuffer && tile.segments) {
-            program.draw(
-                context,
-                gl.TRIANGLES,
-                layer.id,
-                tile.maskedBoundsBuffer,
-                tile.maskedIndexBuffer,
-                tile.segments
-            );
-        } else {
-            const buffer = painter.rasterBoundsBuffer;
-            const vao = painter.rasterBoundsVAO;
-            vao.bind(context, program, buffer, []);
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, buffer.length);
+            if (tile.maskedBoundsBuffer && tile.maskedIndexBuffer && tile.segments) {
+                program.draw(
+                    context,
+                    gl.TRIANGLES,
+                    layer.id,
+                    tile.maskedBoundsBuffer,
+                    tile.maskedIndexBuffer,
+                    tile.segments
+                );
+            } else {
+                const buffer = painter.rasterBoundsBuffer;
+                const vao = painter.rasterBoundsVAO;
+                vao.bind(context, program, buffer, []);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, buffer.length);
+            }
         }
     }
 }
