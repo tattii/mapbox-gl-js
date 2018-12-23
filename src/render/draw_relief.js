@@ -26,8 +26,6 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: Hillshade
         const tile = sourceCache.getTile(tileID);
         renderRelief(painter, tile, layer);
     }
-
-    context.viewport.set([0, 0, painter.width, painter.height]);
 }
 
 
@@ -36,10 +34,10 @@ function renderRelief(painter, tile, layer) {
     const gl = context.gl;
 
     if (tile.dem && tile.dem.level) {
+        // dem texture
         const tileSize = tile.dem.level.dim;
-
         const pixelData = tile.dem.getPixels();
-        context.activeTexture.set(gl.TEXTURE1);
+        context.activeTexture.set(gl.TEXTURE0);
 
         context.pixelStoreUnpackPremultiplyAlpha.set(false);
         tile.demTexture = tile.demTexture || painter.getTileTexture(tile.tileSize);
@@ -52,33 +50,12 @@ function renderRelief(painter, tile, layer) {
             tile.demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
         }
 
-        context.activeTexture.set(gl.TEXTURE0);
-
-        let fbo = tile.fbo;
-
-        if (!fbo) {
-            const renderTexture = new Texture(context, {width: tileSize, height: tileSize, data: null}, gl.RGBA);
-            renderTexture.bind(gl.LINEAR, gl.CLAMP_TO_EDGE);
-
-            fbo = tile.fbo = context.createFramebuffer(tileSize, tileSize);
-            fbo.colorAttachment.set(renderTexture.texture);
-        }
-
-        context.bindFramebuffer.set(fbo.framebuffer);
-        context.viewport.set([0, 0, tileSize, tileSize]);
-
-        const matrix = mat4.create();
-        // Flip rendering at y axis.
-        mat4.ortho(matrix, 0, EXTENT, -EXTENT, 0, 0, 1);
-        mat4.translate(matrix, matrix, [0, -EXTENT, 0]);
-
-
-        // ----------------
+        // relief paint
         const program = painter.useProgram('relief');
         const posMatrix = painter.transform.calculatePosMatrix(tile.tileID.toUnwrapped(), true);
 
         gl.uniformMatrix4fv(program.uniforms.u_matrix, false, posMatrix);
-        gl.uniform1i(program.uniforms.u_image, 1);
+        gl.uniform1i(program.uniforms.u_image, 0);
 
         const shadowColor = layer.paint.get("hillshade-shadow-color");
         gl.uniform4f(program.uniforms.u_shadow, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
