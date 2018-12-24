@@ -23,7 +23,7 @@ void main() {
 	float i = getIndex(v);
 
 	vec4 color = texture2D(u_table, vec2(i / u_color_len, 0), 0.0);
-    gl_FragColor = vec4(color.rgb, u_opacity);
+    gl_FragColor = v > 0.0 ? vec4(color.rgb, u_opacity) : vec4(0.0, 0.0, 0.0, 0.0);
 
 #ifdef OVERDRAW_INSPECTOR
     gl_FragColor = vec4(1.0);
