@@ -82,8 +82,9 @@ function setReliefColor(context, gl, program, layer) {
         [10, [240, 250, 150]],
         [30, [190, 185, 135]],
         [60, [235, 220, 175]],
-        [60, [0, 0, 175]],
-        [100, [0, 100, 0]]
+        [100, [0, 100, 0]],
+        [500, [0, 0, 100]],
+        [1500, [0, 0, 200]]
     ];
 
     const len = colors.length;
@@ -106,7 +107,7 @@ function setReliefColor(context, gl, program, layer) {
     texture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
 
     gl.uniform1i(program.uniforms.u_table, 1);
-    gl.uniform1i(program.uniforms.u_color_len, len);
+    gl.uniform1f(program.uniforms.u_color_len, len);
 }
 
 
