@@ -20,14 +20,14 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: Hillshade
     const gl = context.gl;
     const program = painter.useProgram('relief');
 
+    context.setDepthMode(painter.depthModeForSublayer(0, DepthMode.ReadOnly));
     context.setStencilMode(StencilMode.disabled);
     context.setColorMode(painter.colorModeForRenderPass());
 
     // Constant parameters.
     gl.uniform1i(program.uniforms.u_image, 0);
     gl.uniform1f(program.uniforms.u_opacity, 0.7);
-    const shadowColor = layer.paint.get("hillshade-shadow-color");
-    gl.uniform4f(program.uniforms.u_shadow, shadowColor.r, shadowColor.g, shadowColor.b, shadowColor.a);
+    setReliefColor(gl, program, layer);
 
 
     for (const tileID of tileIDs) {
@@ -71,6 +71,26 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: Hillshade
             }
         }
     }
+}
+
+
+function setReliefColor(gl, program, layer) {
+    // const colors = layer.paint.get("relief-colors");
+    const colors = [
+        [0, [50, 180, 50]],
+        [10, [240, 250, 150]],
+        [30, [190, 185, 135]],
+        [60, [235, 220, 175]],
+        [100, [0, 100, 0]]
+    ];
+
+    // assert max 128 colors
+
+    const u_colors = colors.reduce(function(arr, d) {
+        return arr.concat([d[1][0] / 255, d[1][1] / 255, d[1][2] / 255, d[0]]);
+    }, []);
+    gl.uniform4fv(program.uniforms['u_colors[0]'], u_colors);
+    gl.uniform1i(program.uniforms.u_color_len, colors.length);
 }
 
 

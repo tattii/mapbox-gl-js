@@ -1,7 +1,9 @@
 uniform sampler2D u_image;
 varying vec2 v_pos;
 
-uniform vec4 u_shadow;
+uniform vec4 u_colors[128];
+uniform int u_color_len;
+uniform float u_opacity;
 
 float getElevation(vec2 coord) {
     // Convert encoded elevation value to meters
@@ -11,9 +13,10 @@ float getElevation(vec2 coord) {
 
 
 void main() {
-	float v = getElevation(v_pos);
+    float v = getElevation(v_pos);
 
-    gl_FragColor =  v > 100.0 ? u_shadow : vec4(1.0, 1.0, 1.0, 1.0);
+    vec4 c = u_colors[2];
+    gl_FragColor =  v > 100.0 ? vec4(0.0, 0.2, 0.0, u_opacity) : vec4(c.rgb, u_opacity);
 
 #ifdef OVERDRAW_INSPECTOR
     gl_FragColor = vec4(1.0);
