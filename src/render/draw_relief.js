@@ -45,10 +45,10 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: Hillshade
             if (tile.demTexture) {
                 const demTexture = tile.demTexture;
                 demTexture.update(pixelData, false);
-                demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
+                demTexture.bind(gl.LINEAR, gl.CLAMP_TO_EDGE);
             } else {
                 tile.demTexture = new Texture(context, pixelData, gl.RGBA, false);
-                tile.demTexture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
+                tile.demTexture.bind(gl.LINEAR, gl.CLAMP_TO_EDGE);
             }
 
             // relief paint
