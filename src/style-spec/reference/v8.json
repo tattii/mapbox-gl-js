@@ -2389,6 +2389,7 @@
     "paint_symbol",
     "paint_raster",
     "paint_hillshade",
+    "paint_relief",
     "paint_background"
   ],
   "paint_fill": {
@@ -3939,6 +3940,44 @@
         "sdk-support": {
           "basic functionality": {
             "js": "0.43.0"
+          },
+          "data-driven styling": {}
+        }
+      }
+  },
+  "paint_relief": {
+      "relief-opacity": {
+        "type": "number",
+        "doc": "",
+        "default": 0.7,
+        "minimum": 0,
+        "maximum": 1,
+        "function": "interpolated",
+        "zoom-function": true,
+        "transition": true,
+        "sdk-support": {
+          "basic functionality": {
+            "js": "---"
+          },
+          "data-driven styling": {}
+        }
+      },
+      "relief-colors": {
+        "type": "array",
+        "value": "*",
+        "default": [
+          0, "rgba(0, 0, 255, 0)",
+          10, "royalblue",
+          100, "red"
+        ],
+        "doc": "",
+        "function": "interpolated",
+        "zoom-function": false,
+        "property-function": false,
+        "transition": false,
+        "sdk-support": {
+          "basic functionality": {
+            "js": "---"
           },
           "data-driven styling": {}
         }
