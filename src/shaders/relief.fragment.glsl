@@ -15,8 +15,13 @@ float getElevation(vec2 coord) {
 void main() {
     float v = getElevation(v_pos);
 
-    vec4 c = u_colors[2];
-    gl_FragColor =  v > 100.0 ? vec4(0.0, 0.2, 0.0, u_opacity) : vec4(c.rgb, u_opacity);
+	int k;	
+    for (int i = 0; i < 128; i++){
+		k = i;
+        if (u_colors[i].a >= v) break;
+    }
+
+    gl_FragColor = vec4(u_colors[i].rgb, u_opacity);
 
 #ifdef OVERDRAW_INSPECTOR
     gl_FragColor = vec4(1.0);
