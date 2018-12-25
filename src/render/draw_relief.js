@@ -77,7 +77,7 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: ReliefSty
 
 function setReliefColor(context, gl, program, layer) {
     const image = layer.colorRampImage;
-    const gradation = true;
+    const gradation = layer.paint.get("relief-gradation");
 
     context.activeTexture.set(gl.TEXTURE1);
     context.pixelStoreUnpackPremultiplyAlpha.set(false);

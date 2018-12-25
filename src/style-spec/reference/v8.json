@@ -3962,6 +3962,19 @@
           "data-driven styling": {}
         }
       },
+      "relief-gradation": {
+        "type": "boolean",
+        "function": "piecewise-constant",
+        "zoom-function": false,
+        "default": true,
+        "doc": "",
+        "sdk-support": {
+          "basic functionality": {
+            "js": "---"
+          },
+          "data-driven styling": {}
+        }
+      },
       "relief-colors": {
         "type": "array",
         "value": "*",

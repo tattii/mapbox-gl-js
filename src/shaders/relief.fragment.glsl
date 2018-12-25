@@ -18,7 +18,7 @@ float getIndex(float el) {
 		float v = getElevation(u_table, vec2((i + 0.5) / u_color_len, 1), 0.0);
 		if (v >= el){
 			if (i == 0.0) return i;
-			return i - 1.0 + (el - prev) / (v - prev);
+			return i + (el - prev) / (v - prev);
 		}
 		prev = v;
     }
