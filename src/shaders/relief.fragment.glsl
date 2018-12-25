@@ -11,10 +11,16 @@ float getElevation(sampler2D u_tex, vec2 coord, float bias) {
     return (data.r + data.g * 256.0 + data.b * 256.0 * 256.0);
 }
 
-float getIndex(float v) {
+float getIndex(float el) {
+	float prev;
     for (float i = 0.0; i < 128.0; i++){
-		if (i >= u_color_len) return u_color_len - 1.0;
-		if (getElevation(u_table, vec2(i / u_color_len, 1), 0.0) >= v) return i;
+		if (i >= u_color_len) return u_color_len;
+		float v = getElevation(u_table, vec2((i + 0.5) / u_color_len, 1), 0.0);
+		if (v >= el){
+			if (i == 0.0) return i;
+			return i - 1.0 + (el - prev) / (v - prev);
+		}
+		prev = v;
     }
 }
 

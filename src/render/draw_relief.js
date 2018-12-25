@@ -77,11 +77,12 @@ function drawRelief(painter: Painter, sourceCache: SourceCache, layer: ReliefSty
 
 function setReliefColor(context, gl, program, layer) {
     const image = layer.colorRampImage;
+    const gradation = true;
 
     context.activeTexture.set(gl.TEXTURE1);
     context.pixelStoreUnpackPremultiplyAlpha.set(false);
     const texture = new Texture(context, image, gl.RGBA, false);
-    texture.bind(gl.NEAREST, gl.CLAMP_TO_EDGE);
+    texture.bind((gradation) ? gl.LINEAR : gl.NEAREST, gl.CLAMP_TO_EDGE);
 
     gl.uniform1i(program.uniforms.u_table, 1);
     gl.uniform1f(program.uniforms.u_color_len, image.width);
