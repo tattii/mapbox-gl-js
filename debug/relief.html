@@ -43,15 +43,22 @@ map.on('load', function () {
         "id": "relief",
         "source": "gsi-dem",
         "type": "relief",
-        "layout": {
+        "paint": {
+            "relief-opacity": 0.7,
+            "relief-colors": [
+                0, "#2db4b4",
+                100, "#71b42d",
+                300, "#b4a72d",
+                1000, "#b4562d",
+                2000, "#b4491b",
+                null, "#b43d09"
+            ]
         }
     }, 'waterway-river-canal-shadow');
     map.addLayer({
         "id": "GSI dem",
         "source": "gsi-dem",
         "type": "hillshade",
-        "layout": {
-        }
     }, 'relief');
 });
 
