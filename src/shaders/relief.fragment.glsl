@@ -12,23 +12,23 @@ float getElevation(sampler2D u_tex, vec2 coord, float bias) {
 }
 
 float getIndex(float el) {
-	float prev;
+    float prev;
     for (float i = 0.0; i < 128.0; i++){
-		if (i >= u_color_len) return u_color_len;
-		float v = getElevation(u_table, vec2((i + 0.5) / u_color_len, 1), 0.0);
-		if (v >= el){
-			if (i == 0.0) return i;
-			return i + (el - prev) / (v - prev);
-		}
-		prev = v;
+        if (i >= u_color_len) return u_color_len;
+        float v = getElevation(u_table, vec2((i + 0.5) / u_color_len, 1), 0.0);
+        if (v >= el){
+            if (i == 0.0) return i;
+            return i + (el - prev) / (v - prev);
+        }
+        prev = v;
     }
 }
 
 void main() {
     float v = getElevation(u_image, v_pos, 0.0);
-	float i = getIndex(v);
+    float i = getIndex(v);
 
-	vec4 color = texture2D(u_table, vec2(i / u_color_len, 0), 0.0);
+    vec4 color = texture2D(u_table, vec2(i / u_color_len, 0), 0.0);
     gl_FragColor = v > 0.0 ? vec4(color.rgb, u_opacity) : vec4(0.0, 0.0, 0.0, 0.0);
 
 #ifdef OVERDRAW_INSPECTOR
