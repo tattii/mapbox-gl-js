@@ -11,7 +11,8 @@ uniform float u_maxzoom;
 float getElevation(vec2 coord, float bias) {
     // Convert encoded elevation value to meters
     vec4 data = texture2D(u_image, coord) * 255.0;
-    return (data.r + data.g * 256.0 + data.b * 256.0 * 256.0) / 4.0;
+    float v = (data.r + data.g * 256.0 + data.b * 256.0 * 256.0);
+	return (v > 0.0 ? v : 65536.0) / 4.0; // use 0.0 as NA
 }
 
 void main() {
