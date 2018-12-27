@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision highp float;
+#endif
+
 uniform sampler2D u_image;
 uniform sampler2D u_table;
 varying vec2 v_pos;
@@ -8,7 +12,7 @@ uniform float u_opacity;
 float getElevation(sampler2D u_tex, vec2 coord, float bias) {
     // Convert encoded elevation value to meters
     vec4 data = texture2D(u_tex, coord) * 255.0;
-    return (data.r + data.g * 256.0 + data.b * 256.0 * 256.0);
+    return (data.r + data.g * 256.0 + data.b * 256.0 * 256.0) / 4.0;
 }
 
 float getIndex(float el) {
